@@ -3,6 +3,24 @@
 {% block content %}
 {% include 'account/status.html' %}
 
-<h1>User pages</h1>
+
+<div class="text-xs text-gray-700 bg-gray-50 w-11/12 mt-2 overflow-x-auto ">
+    <table class="w-full table py-4 px-8 bg-white rounded-bl rounded " >
+        <thead class="text-xs text-gray-700 text-left uppercase bg-white border-b ">
+            <tr class="">
+                <th scope = "col" class="px-6 py-4">Product</th>
+                <th scope = "col" class="px-6 py-4">Status</th>
+                <th scope = "col" class="px-6 py-4">Date Ordered</th>
+            </tr>
+        </thead>
+        {% for order in orders %}
+        <tr scope = "row" class="bg-white border-b hover:bg-gray-50">
+            <td class="px-6 py-4">{{order.product}}</td>
+            <td class="px-6 py-4">{{order.status}}</td>
+            <td class="px-6 py-4">{{order.date_created}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 {% endblock %}

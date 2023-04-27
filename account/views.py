@@ -22,7 +22,7 @@ def home(request):
     delivered = Order.objects.filter(status="Delivered").count()
     pending = Order.objects.filter(status="Pending").count
     customers = Customer.objects.all()
-    context = {"title": "Dashboard", "pending": pending, "orders": orders, 
+    context = {"title": "Dashboard", "pending": pending, "orders": orders,
                "order_count": order_count, "delivered": delivered, "user": user, "customers": customers}
     return render(request, 'account/dashboard.html', context)
 
@@ -161,7 +161,8 @@ def loginPage(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        userLogin = authenticate(request, username=username, password=password)
+        userLogin = authenticate(
+            request, username=username.lower(), password=password)
         if userLogin is not None:
             login(request, userLogin)
             return redirect("home")
@@ -178,10 +179,13 @@ def registerPage(request):
     registerForm = CreateUserForm()
 
     if request.method == "POST":
-        registerForm = CreateUserForm(request.POST)
-        if registerForm.is_valid():
-            user = registerForm.cleaned_data.get("username")
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data.get("username")
             messages.success(request, "Account created for " + user)
+
+            registerForm = form.save(commit=False)
+            registerForm.username = registerForm.username.lower()
             registerForm.save()
             return redirect("loginPage")
 
@@ -196,8 +200,16 @@ def logoutUser(request):
 
 
 @unauthenticated
+@allowedUsers(allowed_role=['customer'])
 def userPage(request):
-    user = (request.user.username).title()
-    context = {"title": "Welcome " + user}
+    user = request.user
+    username = (request.user.username).title()
+    order_count = user.customer.order_set.all().count()
+    delivered = user.customer.order_set.filter(status="Delivered").count()
+    pending = user.customer.order_set.filter(status="Pending").count
+    orders = user.customer.order_set.all()
+
+    context = {"title": "Welcome " + username, "pending": pending, "orders": orders,
+               "order_count": order_count, "delivered": delivered, "user": user}
 
     return render(request, 'account/user.html', context)
