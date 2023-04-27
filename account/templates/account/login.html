@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <title>CRM - {{title}}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        .input_div{
+            height: 2rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+
+        }
+        .input_div i{
+            margin-right: 1rem;
+            height: inherit;
+
+        }
+        input{
+            font-size: .7rem;
+            padding: .3rem 1rem;
+            height: inherit;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="w-full h-screen bg-teal-600 flex items-center justify-center">
+        <form class="bg-sky-700 rounded py-8 px-4 login flex items-center justify-center flex-col" action="" method="POST">
+            {% csrf_token %}
+            <h1 class="text-2xl text-white border-b pb-2 mb-4  w-full text-center">Login</h1>
+            <div class="input_div bg-violet-900 pl-4">
+                <i class='bx bxs-user text-white'></i>
+                <input type="text" name="username" placeholder="Username">
+            </div>
+            <div class="input_div bg-violet-900 pl-4">
+                <i class='bx bxs-key text-white'></i>
+                <input type="password" class="" name="password" placeholder="Password">
+            </div>
+            {% for message in messages %}
+                <em class="text-white text-xs my-1 px-2 py-1 block">{{message}}</em>
+            {% endfor %}
+            <button class="hover:bg-amber-400 block w-7/12 py-2 px-4 my-4 rounded bg-amber-300 text-white">Login</button>
+
+            <p class="text-white text-xs">if you don't have an account, <a class="text-amber-300" href="{% url 'registerPage' %}">Register here</a></p>
+        </form>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+.customer_form label{
+    color: #3b82f6
+}
+
+.customer_form tr{
+    display: grid;
+    grid-template-columns: repeat(1fr, 3);
+    gap: 2rem;
+}
+
+.customer_form tr th{
+    grid-column-end: span 1;
+}
+
+.customer_form tr th{
+    grid-column-end: span 2;
+}
+

@@ -1,0 +1,66 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'account/status.html' %}
+
+<div class="md:grid md:grid-cols-5 w-11/12 md:p-4 py-2">
+    <div class=" col-span-2 ">
+        <h1 class="font-bold pb-2 mb-2 border-b border-b-gray-200">Customer:</h1>
+        <div class="p-3 border border-gray-300 rounded">
+            <button class="w-full mb-2" ><a href="{% url 'create_customer' %}" class="px-4 block w-full py-1 bg-blue-500 text-sm text-white font-semibold border rounded hover:text-blue-700 hover:bg-white hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2">Create Customer</a></button>
+            <table class="table table-auto w-full">
+                <thead class="text-xs text-gray-700 text-left bg-white/[0.5] border-b mx-1">
+                    <tr>
+                        <th scope = "col" class = "px-4 py-2 "">Customers</th>
+                        <th scope = "col" class = "px-4 py-2 "">Phone</th>
+                        <th scope = "col" class = "px-4 py-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                    <tr scope = "row" class="py-2 bg-white/[0.5] border-b hover:bg-gray-50 rounded">
+                        <td class="px-4 text-xs py-1 font-bold hover:text-blue-500 ">{{customer.name}}</td>
+                        <td class="px-4 text-xs py-1">{{customer.phone}}</td>
+                        <td class="px-4 text-xs py-1"> <button class="block w-full rounded text-white text-xs bg-sky-500 hover:bg-sky-700 my-1 text-center py-1"><a class="block w-full" href="{% url 'customer' pk=customer.id %}">View</a></button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="md:mx-3 mt-4 md:mt-0 col-span-3">
+        <h1 class="font-bold pb-2 mb-2 border-b">last 5 orders:</h1>
+        <div class="p-3 border border-gray-300 rounded">
+            <button class="w-full mb-2" ><a href="{% url 'create_order' %}" class="px-4 block w-full py-1 bg-blue-500 text-sm text-white font-semibold border rounded hover:text-blue-700 hover:bg-white hover:border-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2">Create Order</a></button>
+            <div class="overflow-x-auto w-full">
+                <table class="table table-auto w-full">
+                    <thead class="text-xs text-gray-700 text-left bg-white/[0.5] mx-1 border-b">
+                        <tr class="">
+                            <th scope = "col" class = "px-4 py-2 ">Product</th>
+                            <th scope = "col" class = "px-4 py-2">Date Ordered</th>
+                            <th scope = "col" class = "px-4 py-2">Status</th>
+                            <th scope = "col" class = "px-4 py-2">Update</th>
+                            <th scope = "col" class = "px-4 py-2">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr scope = "row" class="py-2 bg-white/[0.5] border-b hover:bg-gray-50 rounded">
+                            <td class="px-4 text-xs py-2">{{order.product}}</td>
+                            <td class="px-4 text-xs py-2">{{order.date_created}}</td>
+                            <td class="px-4 text-xs py-2">{{order.status}}</td>
+                            <td><button><a class="p-3 md:py-0 mx-4 bg-blue-500 rounded  text-white hover:bg-blue-700" href="{% url 'update_order' pk=order.id %}"><i class='bx bxs-edit-alt'></i></a></button>
+                            <td><button><a class="p-3 md:py-0 mx-4 bg-red-500 rounded  text-white hover:bg-red-700" href="{% url 'delete_order' pk=order.id %}"><i class='bx bxs-trash'></i></a></button>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

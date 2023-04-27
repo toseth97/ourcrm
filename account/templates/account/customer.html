@@ -1,0 +1,70 @@
+{% extends 'account/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class=" md:grid md:grid-cols-3 gap-3 w-11/12 mt-4 mb-1 py-4">
+        <div class=" bg-white rounded p-2 md:my-0 my-1">
+            <h1 class="py-2 border-b ">Customer: </h1>
+            <div>
+                <button class="block hover:text-white hover:bg-blue-500 w-full rounded text-blue-500 text-xs border border-blue-400 my-1 text-center py-1"><a class="block w-full" href="{% url 'update_customer' pk=customer.id %}">Update customer</a></button>
+                <button class="block hover:text-white hover:bg-sky-600 w-full rounded text-sky-600 text-xs border border-sky-400 my-1 text-center py-1"><a class="block w-full" href="{% url 'place_order' pk=customer.id %}">Place Order</a></button>
+            </div>
+        </div>
+        <div class=" bg-white rounded p-2 md:my-0 my-1">
+            <h1 class="py-2 border-b ">Contact Information: </h1>
+            <div class="">
+                <p class="block rounded text-sm py-2">Phone: <span class=" ml-8">{{customer.phone}}</span></p>
+                <p class="block rounded text-sm py-2">Email: <span class=" ml-8">{{customer.email}}</span></p>
+            </div>
+        </div>
+        <div class=" bg-white rounded p-2 md:my-0 my-1 ">
+            <h1 class="py-2 border-b ">Total Order: </h1>
+            <div class="w-full text-center font-bold">
+                <h3 class="text-5xl mt-2">{{order_count}}</h3>
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="w-11/12 m2-8 py-3 bg-white">
+        <form class="w-full grid grid-cols-1 px-8 md:flex items-center gap-1 md:gap-2 " method="GET" action="">
+            
+            <button class="px-8 py-1 bg-blue-500 rounded mx-4 ml-8 text-white hover:bg-blue-700">Search</button>
+            {{filters.form}}
+            
+        </form>
+    </div>
+
+    <div class="text-xs text-gray-700 bg-gray-50 w-11/12 mt-2 overflow-x-auto ">
+        <table class="w-full table py-4 px-8 bg-white rounded-bl rounded " >
+            <thead class="text-xs text-gray-700 text-left uppercase bg-white border-b ">
+                <tr class="">
+                    <th scope = "col" class="px-6 py-4">Product</th>
+                    <th scope = "col" class="px-6 py-4">Status</th>
+                    <th scope = "col" class="px-6 py-4">Date Ordered</th>
+                    <th scope = "col" class="px-6 py-4">Update</th>
+                    <th scope = "col" class="px-6 py-4">Remove</th>
+                </tr>
+            </thead>
+            {% for order in orders %}
+            <tr scope = "row" class="bg-white border-b hover:bg-gray-50">
+                <td class="px-6 py-4">{{order.product}}</td>
+                <td class="px-6 py-4">{{order.status}}</td>
+                <td class="px-6 py-4">{{order.date_created}}</td>
+                <td><button><a class="p-3 mx-8 bg-blue-500 rounded  text-white hover:bg-blue-700"><i class='bx bxs-edit-alt'></i></a></button>
+                <td><button><a class="p-3 mx-8 bg-red-500 rounded  text-white hover:bg-red-700" href="{% url 'delete_order' pk=order.id %}"><i class='bx bxs-trash'></i></a></button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+
+
+
+
+
+{% endblock %}

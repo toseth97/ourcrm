@@ -1,0 +1,16 @@
+{% extends 'account/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <form class="form mt-8 bg-white/[0.8] rounded p-8 md:w-5/12 w-11/12 text-center" method="POST" action="{% url 'create_order' %}">
+        {% csrf_token %}
+        <div class="customer_form grid grid-cols-1">
+            {{orderForm}}
+        </div>
+        <input class="py-1 px-4 mt-4 bg-blue-500 rounded hover:bg-blue-700 text-white" type="submit" value="Create">
+    </form>
+
+
+{% endblock %}

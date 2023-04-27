@@ -1,0 +1,27 @@
+{% extends 'account/base.html' %}
+
+{% block content %}
+<div class="w-11/12 my-8 ">
+        <h1 class="block w-full px-8 py-4 my-1 font-bold bg-white rounded-tl rounded-tr text-xs text-gray-700 uppercase bg-gray-50">Products</h1>
+        <div class="text-xs text-gray-700 uppercase bg-gray-50 ">
+            <table class="w-full table py-4 px-8 bg-white rounded-bl rounded-br" >
+                <thead class="text-xs text-gray-700 text-left uppercase bg-white border-b ">
+                    <tr class="">
+                        <th scope = "col" class="px-6 py-4">Product</th>
+                        <th scope = "col" class="px-6 py-4">Category</th>
+                        <th scope = "col" class="px-6 py-4">Price</th>
+                    </tr>
+                </thead>
+                {% for product in products %}
+                <tr scope = "row" class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">{{product.name}}</td>
+                    <td class="px-6 py-4">{{product.category}}</td>
+                    <td class="px-6 py-4">${{product.price}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+</div>
+
+{% endblock %}

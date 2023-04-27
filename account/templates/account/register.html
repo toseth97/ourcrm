@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+    <title>CRM - {{title}}</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        .input_div{
+            height: 2rem;
+            margin: .5rem 0;
+            border-radius: 10px;
+
+        }
+        .input_div i{
+            margin-right: 1rem;
+            height: inherit;
+
+        }
+        input{
+            font-size: .7rem;
+            padding: .3rem 1rem;
+            height: inherit;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="w-full h-screen bg-teal-600 flex items-center justify-center">
+        <form class="bg-sky-700 rounded py-8 px-4 login flex items-center justify-center flex-col" method="POST" action="">
+            {% csrf_token %}
+            <h1 class="text-2xl text-white border-b pb-2 mb-4  w-full text-center">Create User</h1>
+            <div class="input_div bg-violet-900 pl-4">
+                <i class='bx bxs-user text-white'></i>
+                {{registerForm.username}}
+            </div>
+            <div class="input_div bg-violet-900 pl-4">
+                <i class='bx bxs-envelope text-white'></i>
+                {{registerForm.email}}
+            </div>
+            <div class="input_div bg-violet-900 pl-4">
+                <i class='bx bxs-key text-white'></i>
+                {{registerForm.password1}}
+            </div>
+            <div class="input_div bg-violet-900 pl-4">
+                <i class='bx bxs-key text-white'></i>
+                {{registerForm.password2}}
+            </div>
+            <button class="hover:bg-amber-400 block w-7/12 py-2 px-4 my-4 rounded bg-amber-300 text-white">Register</button>
+            {% if registerForm.errors %}
+                {% for field in registerForm %}
+                    {% for error in field.errors %}
+                        <em class="text-red-500 text-xs">{{error}}</em>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            <p class="text-white text-xs mt-1 ">Already have an account? <a class="text-amber-300" href="{% url 'loginPage' %}">Login</a></p>
+        </form>
+
+    </div>
+
+    <script>
+        input = document.getElementsByTagName("input")
+        input[1].placeholder = "Username"
+        input[2].placeholder = "Email"
+        input[3].placeholder = "Password"
+        input[4].placeholder = "Confirm Password"
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>
