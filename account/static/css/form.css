@@ -16,3 +16,15 @@
     grid-column-end: span 2;
 }
 
+.input_div{
+    height: 2rem;
+    background-color: bisque;
+    border-radius: 10px;
+
+}
+
+.input_div>input{
+    width: 100%;
+    padding: 0 1rem;
+    background-color: blanchedalmond;
+}

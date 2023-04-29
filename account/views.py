@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import Group
 from .forms import CreateUserForm
 from django.contrib import messages
 from .decorator import unauthenticated, allowedUsers, redirection
 from .filter import *
 from .models import *
 from .forms import *
+from pprint import pprint
 
 
 # Create your views here.
@@ -84,9 +86,11 @@ def update_customer(request, pk):
 
 
 @unauthenticated
-@allowedUsers(allowed_role=['admin'])
 def create_order(request):
-    orderForm = OrderForm()
+    if request.user.groups.all()[0].name == 'admin':
+        orderForm = OrderForm()
+    else:
+        orderForm = OrderForm(initial={"customer": request.user.customer})
     context = {"orderForm": orderForm, "title": "Create Order"}
     if request.method == "POST":
         orderForm = OrderForm(request.POST)
@@ -173,20 +177,26 @@ def loginPage(request):
 
 
 def registerPage(request):
+    # redirect authenticated user to home
     if request.user.is_authenticated:
         return redirect("home")
 
+    # modelForm
     registerForm = CreateUserForm()
-
+    # Logic for form submission
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.cleaned_data.get("username")
-            messages.success(request, "Account created for " + user)
-
-            registerForm = form.save(commit=False)
-            registerForm.username = registerForm.username.lower()
+            user = form.cleaned_data.get("username").title()
+            registerForm = form.save()  # Save to db
+            Customer.objects.create(user=registerForm)
+            group = Group.objects.get(name='customer')
+            username = registerForm.username
+            registerForm.groups.add(group)
+            registerForm.username = username.lower()
             registerForm.save()
+
+            messages.success(request, "Account created for " + user)
             return redirect("loginPage")
 
     context = {"title": "User Registration", "registerForm": registerForm}
@@ -213,3 +223,20 @@ def userPage(request):
                "order_count": order_count, "delivered": delivered, "user": user}
 
     return render(request, 'account/user.html', context)
+
+
+@unauthenticated
+@allowedUsers(allowed_role=['customer'])
+def userSettings(request):
+    form = CustomerForm(instance=request.user.customer)
+    print(form)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES,
+                            instance=request.user.customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Update was successful")
+            return redirect("userpage")
+
+    context = {"title": "Settings", "form": form}
+    return render(request, 'account/settings.html', context)

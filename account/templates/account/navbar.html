@@ -9,18 +9,9 @@
 
         
         <div class="flex items-center md:order-2">
-            <p class="mx-4">Howdy {{user.username}}</p>
             <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
             <span class="sr-only">Open user menu</span>
-            {% if user%}
-
-            <img class="w-8 h-8 rounded-full" src={{user.image}} alt="user photo">
-
-            {% else %}
-            <img class="w-8 h-8 rounded-full" src="{% static 'img/default_user.png' %}" alt="user photo">
-
-            {% endif %}
-
+            <img class="w-8 h-8 rounded-full" src="{{request.user.customer.profile_pix.url}}" alt="user photo">
             </button>
             {% if user%}
             <!-- Dropdown menu -->
@@ -30,24 +21,29 @@
                     <span class="block text-sm  text-gray-500 truncate">{{user.email}}</span>
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
+                    {% if user.is_staff %}
                     <li>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Dashboard</a>
+                        <a href="{% url 'home' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Dashboard</a>
                     </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'settings' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Settings</a>
+                    </li>
+                    {% endif %}
                     <li>
                     <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">Sign out</a>
                     </li>
                 </ul>
                 </div>
-            
-            {% else %}
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow  p-3" id="user-dropdown">
-                <h1 class="text-blue-500 rounded p-3 hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0"><a href="">LogIn</a></h1>    
-            </div>
             {% endif %}
+
+            <!---mobile toggle button--->
+            {% if user.is_staff %}
             <button data-collapse-toggle="mobile-menu-2" type="button" class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="mobile-menu-2" aria-expanded="false">
-            <span class="sr-only">Open main menu</span>
-            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
-            </button>
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                </button>
+            {% endif %}
         </div>
         
 
